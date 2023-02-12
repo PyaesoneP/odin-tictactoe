@@ -1,3 +1,6 @@
+/* eslint-disable no-loop-func */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-plusplus */
 function Player(Symbol) {
   const symbol = Symbol;
@@ -91,5 +94,40 @@ const Gameboard = (() => {
       return false;
     }
   };
-  return { mark, checkGame };
+  return { mark, clearGameboard, checkGame };
+})();
+
+const startGame = (() => {
+  const startButton = document.getElementById("start-game");
+  const player1 = Player("x");
+  const player2 = Player("o");
+  let activePlayer = player1;
+
+  startButton.addEventListener("click", clickGrid);
+
+  function clickGrid() {
+    const squares = document.getElementsByClassName("square");
+    for (const square of squares) {
+      square.addEventListener("click", () => {
+        Gameboard.mark(
+          Number(square.id.match(/\d+/)),
+          activePlayer.getSymbol()
+        );
+        if (Gameboard.checkGame()) {
+        }
+        clickGrid();
+        changeActivePlayer();
+      });
+    }
+  }
+  function changeActivePlayer() {
+    if (activePlayer === player1) {
+      activePlayer = player2;
+    } else {
+      activePlayer = player1;
+    }
+  }
+  const getActivePlayer = () => {
+    console.log(activePlayer.getSymbol());
+  };
 })();
