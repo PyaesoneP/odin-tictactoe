@@ -8,12 +8,15 @@ function Player(Symbol) {
   const getSymbol = () => _symbol;
   const getScore = () => _score;
   const win = () => _score++;
-  const announceWin = () => `${_symbol} wins!`;
+  const resetScore = () => {
+    _score = 0;
+    return _score;
+  };
   return {
     getSymbol,
     getScore,
     win,
-    announceWin,
+    resetScore,
   };
 }
 
@@ -111,6 +114,7 @@ const Gameboard = (() => {
 
 const Game = (() => {
   const startButton = document.getElementById("start-game");
+  const restartButton = document.getElementById("restart-game");
   const player1 = Player("./assets/icons/close (1).svg");
   const player2 = Player("./assets/icons/circle-outline.svg");
   let activePlayer = player1;
@@ -119,6 +123,8 @@ const Game = (() => {
     clickGrid();
     scoreDisplayer.updateScore();
   });
+
+  restartButton.addEventListener("click", restartGame);
 
   function clickGrid() {
     const squares = document.getElementsByClassName("square");
@@ -151,6 +157,16 @@ const Game = (() => {
     } else {
       activePlayer = player1;
     }
+  }
+
+  function restartGame() {
+    player1.resetScore();
+    player2.resetScore();
+    scoreDisplayer.clearScore();
+    scoreDisplayer.updateScore();
+    Gameboard.emptyBoard();
+    activePlayer = player1;
+    clickGrid();
   }
 
   const getPlayer1Symbol = () => player1.getSymbol();
