@@ -32,6 +32,12 @@ const Gameboard = (() => {
       const squareContent = document.createElement("img");
       squareContent.setAttribute("src", `${gameboard[i] ? gameboard[i] : ""}`);
       squareContent.className = "symbol-on-board";
+      if (gameboard[i] === "./assets/icons/close (1).svg") {
+        squareContent.classList.add("x-symbol");
+      }
+      if (gameboard[i] === "./assets/icons/circle-outline.svg") {
+        squareContent.classList.add("o-symbol");
+      }
       square.appendChild(squareContent);
       gameBoard.appendChild(square);
     }
@@ -122,6 +128,7 @@ const Game = (() => {
     }
     clickGrid();
     scoreDisplayer.updateScore();
+    showActivePlayer();
   });
 
   restartButton.addEventListener("click", restartGame);
@@ -152,11 +159,25 @@ const Game = (() => {
             scoreDisplayer.updateScore();
             Gameboard.emptyBoard();
             changeActivePlayer();
+            showActivePlayer();
           }
           clickGrid();
           changeActivePlayer();
+          showActivePlayer();
         }
       });
+    }
+  }
+
+  function showActivePlayer() {
+    const player1Div = document.getElementById("player1-score");
+    const player2Div = document.getElementById("player2-score");
+    if (activePlayer === player1) {
+      player1Div.style.boxShadow = "0px 0px 5px 2px var(--x-color)";
+      player2Div.style.boxShadow = "none";
+    } else {
+      player2Div.style.boxShadow = "0px 0px 5px 2px var(--o-color)";
+      player1Div.style.boxShadow = "none";
     }
   }
 
@@ -175,6 +196,7 @@ const Game = (() => {
     scoreDisplayer.updateScore();
     Gameboard.emptyBoard();
     activePlayer = player1;
+    showActivePlayer();
     clickGrid();
   }
 
@@ -201,6 +223,7 @@ const scoreDisplayer = (() => {
 
     const player1Symbol = document.createElement("img");
     player1Symbol.className = "symbol-on-score";
+    player1Symbol.classList.add("x-symbol");
     player1Symbol.setAttribute("src", `${Game.getPlayer1Symbol()}`);
 
     const player1Score = document.createElement("p");
@@ -215,6 +238,7 @@ const scoreDisplayer = (() => {
 
     const player2Symbol = document.createElement("img");
     player2Symbol.className = "symbol-on-score";
+    player2Symbol.classList.add("o-symbol");
     player2Symbol.setAttribute("src", `${Game.getPlayer2Symbol()}`);
 
     const player2Score = document.createElement("p");
