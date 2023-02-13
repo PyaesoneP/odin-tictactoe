@@ -111,7 +111,24 @@ const Gameboard = (() => {
     }
     return false;
   };
-  return { mark, clearGameboard, emptyBoard, checkGame };
+
+  const noGame = () => {
+    if (
+      gameboard[0] &&
+      gameboard[1] &&
+      gameboard[2] &&
+      gameboard[3] &&
+      gameboard[4] &&
+      gameboard[5] &&
+      gameboard[6] &&
+      gameboard[7] &&
+      gameboard[8]
+    ) {
+      return true;
+    }
+  };
+
+  return { mark, clearGameboard, emptyBoard, checkGame, noGame };
 })();
 
 const Game = (() => {
@@ -155,6 +172,13 @@ const Game = (() => {
             } else {
               player2.win();
             }
+            scoreDisplayer.clearScore();
+            scoreDisplayer.updateScore();
+            Gameboard.emptyBoard();
+            changeActivePlayer();
+            showActivePlayer();
+          }
+          if (Gameboard.noGame()) {
             scoreDisplayer.clearScore();
             scoreDisplayer.updateScore();
             Gameboard.emptyBoard();
