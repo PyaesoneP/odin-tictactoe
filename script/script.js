@@ -54,6 +54,9 @@ const Gameboard = (() => {
   }
 
   const mark = (x, y) => {
+    if (gameboard[x]) {
+      return false;
+    }
     gameboard[x] = y;
     clearGameboard();
     renderGameboard();
@@ -64,50 +67,43 @@ const Gameboard = (() => {
       if (gameboard[0] === gameboard[1] && gameboard[0] === gameboard[2]) {
         return true;
       }
-      return false;
     }
     if (gameboard[3] && gameboard[4] && gameboard[5]) {
       if (gameboard[3] === gameboard[4] && gameboard[3] === gameboard[5]) {
         return true;
       }
-      return false;
     }
     if (gameboard[6] && gameboard[7] && gameboard[8]) {
       if (gameboard[6] === gameboard[7] && gameboard[6] === gameboard[8]) {
         return true;
       }
-      return false;
     }
     if (gameboard[0] && gameboard[3] && gameboard[6]) {
       if (gameboard[0] === gameboard[3] && gameboard[0] === gameboard[6]) {
         return true;
       }
-      return false;
     }
     if (gameboard[1] && gameboard[4] && gameboard[7]) {
       if (gameboard[1] === gameboard[4] && gameboard[1] === gameboard[7]) {
         return true;
       }
-      return false;
     }
     if (gameboard[2] && gameboard[5] && gameboard[8]) {
       if (gameboard[2] === gameboard[5] && gameboard[2] === gameboard[8]) {
         return true;
       }
-      return false;
     }
     if (gameboard[0] && gameboard[4] && gameboard[8]) {
       if (gameboard[0] === gameboard[4] && gameboard[0] === gameboard[8]) {
         return true;
       }
-      return false;
     }
     if (gameboard[2] && gameboard[4] && gameboard[6]) {
       if (gameboard[2] === gameboard[4] && gameboard[2] === gameboard[6]) {
         return true;
       }
-      return false;
     }
+    return false;
   };
   return { mark, clearGameboard, emptyBoard, checkGame };
 })();
@@ -130,23 +126,32 @@ const Game = (() => {
     const squares = document.getElementsByClassName("square");
     for (const square of squares) {
       square.addEventListener("click", () => {
-        Gameboard.mark(
-          Number(square.id.match(/\d+/)),
-          activePlayer.getSymbol()
-        );
-        if (Gameboard.checkGame()) {
-          if (activePlayer === player1) {
-            player1.win();
-          } else {
-            player2.win();
+        if (
+          Gameboard.mark(
+            Number(square.id.match(/\d+/)),
+            activePlayer.getSymbol()
+          ) === false
+        ) {
+          clickGrid();
+        } else {
+          Gameboard.mark(
+            Number(square.id.match(/\d+/)),
+            activePlayer.getSymbol()
+          );
+          if (Gameboard.checkGame()) {
+            if (activePlayer === player1) {
+              player1.win();
+            } else {
+              player2.win();
+            }
+            scoreDisplayer.clearScore();
+            scoreDisplayer.updateScore();
+            Gameboard.emptyBoard();
+            changeActivePlayer();
           }
-          scoreDisplayer.clearScore();
-          scoreDisplayer.updateScore();
-          Gameboard.emptyBoard();
+          clickGrid();
           changeActivePlayer();
         }
-        clickGrid();
-        changeActivePlayer();
       });
     }
   }
