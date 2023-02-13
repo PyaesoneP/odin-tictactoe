@@ -3,12 +3,12 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-plusplus */
 function Player(Symbol) {
-  const symbol = Symbol;
-  let score = 0;
-  const getSymbol = () => symbol;
-  const getScore = () => score;
-  const win = () => score++;
-  const announceWin = () => `${symbol} wins!`;
+  const _symbol = Symbol;
+  let _score = 0;
+  const getSymbol = () => _symbol;
+  const getScore = () => _score;
+  const win = () => _score++;
+  const announceWin = () => `${_symbol} wins!`;
   return {
     getSymbol,
     getScore,
@@ -19,25 +19,37 @@ function Player(Symbol) {
 
 const Gameboard = (() => {
   const gameboard = new Array(9);
+
   function renderGameboard() {
     const gameBoard = document.getElementById("gameboard");
     for (let i = 0; i < gameboard.length; i++) {
       const square = document.createElement("div");
       square.id = `square${i}`;
       square.className = "square";
-      const squareContent = document.createElement("p");
-      squareContent.innerText = `${gameboard[i] ? gameboard[i] : ""}`;
+      const squareContent = document.createElement("img");
+      squareContent.setAttribute("src", `${gameboard[i] ? gameboard[i] : ""}`);
+      squareContent.className = "symbol-on-board";
       square.appendChild(squareContent);
       gameBoard.appendChild(square);
     }
   }
   renderGameboard();
+
   function clearGameboard() {
     const gameBoard = document.getElementById("gameboard");
     while (gameBoard.lastChild) {
       gameBoard.removeChild(gameBoard.lastChild);
     }
   }
+
+  function emptyBoard() {
+    for (let i = 0; i < gameboard.length; i++) {
+      delete gameboard[i];
+    }
+    clearGameboard();
+    renderGameboard();
+  }
+
   const mark = (x, y) => {
     gameboard[x] = y;
     clearGameboard();
@@ -94,16 +106,19 @@ const Gameboard = (() => {
       return false;
     }
   };
-  return { mark, clearGameboard, checkGame };
+  return { mark, clearGameboard, emptyBoard, checkGame };
 })();
 
-const startGame = (() => {
+const Game = (() => {
   const startButton = document.getElementById("start-game");
-  const player1 = Player("x");
-  const player2 = Player("o");
+  const player1 = Player("./assets/icons/close (1).svg");
+  const player2 = Player("./assets/icons/circle-outline.svg");
   let activePlayer = player1;
 
-  startButton.addEventListener("click", clickGrid);
+  startButton.addEventListener("click", () => {
+    clickGrid();
+    scoreDisplayer.updateScore();
+  });
 
   function clickGrid() {
     const squares = document.getElementsByClassName("square");
@@ -114,12 +129,22 @@ const startGame = (() => {
           activePlayer.getSymbol()
         );
         if (Gameboard.checkGame()) {
+          if (activePlayer === player1) {
+            player1.win();
+          } else {
+            player2.win();
+          }
+          scoreDisplayer.clearScore();
+          scoreDisplayer.updateScore();
+          Gameboard.emptyBoard();
+          changeActivePlayer();
         }
         clickGrid();
         changeActivePlayer();
       });
     }
   }
+
   function changeActivePlayer() {
     if (activePlayer === player1) {
       activePlayer = player2;
@@ -127,7 +152,62 @@ const startGame = (() => {
       activePlayer = player1;
     }
   }
-  const getActivePlayer = () => {
-    console.log(activePlayer.getSymbol());
+
+  const getPlayer1Symbol = () => player1.getSymbol();
+  const getPlayer2Symbol = () => player2.getSymbol();
+  const getPlayer1Score = () => player1.getScore();
+  const getPlayer2Score = () => player2.getScore();
+
+  return {
+    getPlayer1Score,
+    getPlayer2Score,
+    getPlayer1Symbol,
+    getPlayer2Symbol,
   };
+})();
+
+const scoreDisplayer = (() => {
+  function updateScore() {
+    const scoreBoard = document.getElementById("score-displayer");
+
+    const player1Div = document.createElement("div");
+    player1Div.id = "player1-score";
+    player1Div.className = "scores";
+
+    const player1Symbol = document.createElement("img");
+    player1Symbol.className = "symbol-on-score";
+    player1Symbol.setAttribute("src", `${Game.getPlayer1Symbol()}`);
+
+    const player1Score = document.createElement("p");
+    player1Score.innerText = `${Game.getPlayer1Score()}`;
+
+    player1Div.appendChild(player1Symbol);
+    player1Div.appendChild(player1Score);
+
+    const player2Div = document.createElement("div");
+    player2Div.id = "player2-score";
+    player2Div.className = "scores";
+
+    const player2Symbol = document.createElement("img");
+    player2Symbol.className = "symbol-on-score";
+    player2Symbol.setAttribute("src", `${Game.getPlayer2Symbol()}`);
+
+    const player2Score = document.createElement("p");
+    player2Score.innerText = `${Game.getPlayer2Score()}`;
+
+    player2Div.appendChild(player2Symbol);
+    player2Div.appendChild(player2Score);
+
+    scoreBoard.appendChild(player1Div);
+    scoreBoard.appendChild(player2Div);
+  }
+
+  function clearScore() {
+    const scoreBoard = document.getElementById("score-displayer");
+    while (scoreBoard.lastChild) {
+      scoreBoard.removeChild(scoreBoard.lastChild);
+    }
+  }
+
+  return { updateScore, clearScore };
 })();

@@ -1,6 +1,12 @@
+:root {
+  --main-color: rgb(255, 247, 236);
+  --symbol-on-board: 85px;
+  --symbol-on-score: 20px;
+}
+
 body {
   height: 100vh;
-  background-color: aquamarine;
+  background-color: var(--main-color);
 }
 
 #grid-container {
@@ -27,7 +33,7 @@ body {
 #gameboard {
   width: 500px;
   height: 500px;
-  background-color: white;
+  background-color: hsl(0, 0%, 10%);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -35,5 +41,15 @@ body {
 }
 
 .square {
-  background-color: aquamarine;
+  background-color: var(--main-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.symbol-on-board {
+  width: var(--symbol-on-board);
+}
+.symbol-on-score {
+  width: var(--symbol-on-score);
 }
