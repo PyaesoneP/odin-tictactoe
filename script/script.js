@@ -116,6 +116,10 @@ const Game = (() => {
   let activePlayer = player1;
 
   startButton.addEventListener("click", () => {
+    const scoreDisplay = document.getElementById("score-displayer");
+    if (scoreDisplay.lastChild) {
+      return false;
+    }
     clickGrid();
     scoreDisplayer.updateScore();
   });
