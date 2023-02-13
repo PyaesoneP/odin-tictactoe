@@ -1,10 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
 
 body {
   --main-color: rgb(255, 247, 236);
-  --secondary-color: hsl(0, 0%, 10%);
+  --secondary-color: #1a1a1a;
   --text-color: black;
   --score-text: 1.5rem;
+  --logo-text: 2rem;
+  --logo-symbol: 35px;
+  --footer-logo: 50px;
+  --theme-switch-icon: 30px;
+  --switch-icon-color: invert(47%) sepia(48%) saturate(6944%) hue-rotate(192deg)
+    brightness(102%) contrast(108%);
+  --icon-color: invert(0%) sepia(18%) saturate(2785%) hue-rotate(133deg)
+    brightness(83%) contrast(80%);
   --symbol-on-board: 85px;
   --symbol-on-score: 30px;
   --x-color: #06ff45da;
@@ -19,18 +27,55 @@ body {
   height: 100vh;
   background-color: var(--main-color);
   color: var(--text-color);
-  font-family: "Libre Caslon Text", serif;
+  font-family: "Montserrat", sans-serif;
+}
+.night {
+  --main-color: hsl(0, 0%, 10%);
+  --secondary-color: #fff7ec;
+  --text-color: white;
+  --switch-icon-color: invert(91%) sepia(76%) saturate(605%) hue-rotate(338deg)
+    brightness(105%) contrast(98%);
+  --icon-color: invert(87%) sepia(4%) saturate(1608%) hue-rotate(321deg)
+    brightness(115%) contrast(101%);
+  --score-border: 1px solid rgb(255, 247, 236);
 }
 
 #grid-container {
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(12fr);
+  grid-template-columns: repeat(12, 1fr);
   grid-auto-rows: auto 1fr auto;
+  gap: 30px;
 }
 
 #header {
   grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+#logo {
+  font-size: var(--logo-text);
+  font-weight: 600;
+  grid-column: 1 / span 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo-symbol {
+  width: var(--logo-symbol);
+}
+#theme-switch {
+  grid-column: 8 / span 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#theme-switch-icon {
+  width: var(--theme-switch-icon);
+  filter: var(--icon-color);
+}
+#theme-switch-icon:hover {
+  filter: var(--switch-icon-color);
 }
 
 #grid-container > div:nth-child(2) {
@@ -100,4 +145,22 @@ body {
 }
 .symbol-on-score {
   width: var(--symbol-on-score);
+}
+
+#footer {
+  grid-column: 1 / span 12;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: lighter;
+}
+#footer > a {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
+#footer-logo {
+  width: var(--footer-logo);
+  filter: var(--icon-color);
 }

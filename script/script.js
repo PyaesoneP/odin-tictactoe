@@ -260,3 +260,28 @@ const scoreDisplayer = (() => {
 
   return { updateScore, clearScore };
 })();
+
+const switchTheme = (() => {
+  (function themeSwitch() {
+    const switchIcon = document.getElementById("theme-switch-icon");
+    switchIcon.addEventListener("click", () => {
+      const { body } = document;
+      body.classList.toggle("night");
+      if (
+        switchIcon.getAttribute("src") ===
+        "./assets/icons/moon-waxing-crescent.svg"
+      ) {
+        switchIcon.setAttribute(
+          "src",
+          "./assets/icons/white-balance-sunny.svg"
+        );
+      } else {
+        switchIcon.setAttribute(
+          "src",
+          "./assets/icons/moon-waxing-crescent.svg"
+        );
+      }
+      switchTheme();
+    });
+  })();
+})();

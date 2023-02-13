@@ -6,11 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style/style.css" />
     <script src="./script/script.js" defer></script>
-    <title>Document</title>
+    <title>Tic-Tac-Toe</title>
   </head>
   <body>
     <div id="grid-container">
-      <div id="header"></div>
+      <div id="header">
+        <div id="logo">
+          <span>TIC - T</span>
+          <img
+            src="./assets/icons/close (1).svg"
+            alt=""
+            class="logo-symbol x-symbol"
+          />
+          <span>C - T</span>
+          <img
+            src="./assets/icons/circle-outline.svg"
+            alt=""
+            class="logo-symbol o-symbol"
+          />
+          <span>E</span>
+        </div>
+
+        <div id="theme-switch"></div>
+        <img
+          src="./assets/icons/moon-waxing-crescent.svg"
+          alt="theme-switch-icon"
+          id="theme-switch-icon"
+        />
+      </div>
 
       <div>
         <div id="score-displayer"></div>
@@ -29,7 +52,15 @@
         </div>
       </div>
 
-      <div id="footer"></div>
+      <div id="footer">
+        <span>&#169; Pyae Sone &#64;</span>
+        <a href="https://github.com/PyaesoneP"
+          ><img
+            src="./assets/icons/GitHub-Logos/GitHub-Logos/GitHub_Logo.png"
+            alt="github logo"
+            id="footer-logo"
+        /></a>
+      </div>
     </div>
   </body>
 </html>
